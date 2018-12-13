@@ -1,0 +1,36 @@
+groups:
+- neurodata_type_def: CompartmentSeries
+  neurodata_type_inc: TimeSeries
+  doc: Stores continuous data in cell compartments
+  datasets:
+  - name: gid
+    dtype: uint32
+    doc: list of cell ids
+    shape:
+    - null
+    dims:
+    - cells
+    quantity: '?'
+  - name: index_pointer
+    dtype: uint64
+    doc: index pointer
+    shape:
+    - null
+    dims:
+    - cells
+  - name: element_id
+    dtype: uint32
+    doc: cell compartment ids corresponding to a given column in the data
+    shape:
+    - null
+    dims:
+    - compartments
+  - name: compartment_position
+    dtype: float
+    doc: relative position of recording within a given cell
+    shape:
+    - null
+    - null
+    dims:
+    - compartments
+    - position
