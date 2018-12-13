@@ -7,14 +7,14 @@ This extension defines a single NWB data type, `CompartmentSeries`, that allows 
 
 This structure stores an arbitrarily large number of cells and cellular compartments with 5 datasets. It can scale to a million or more neurons, and enables efficient parallel read and write. It is designed to handle NEURON output data and to easily interface with the SONATA format.
 
-## Usage
+## Guide
 ### python
-to install:
+#### installation
 ```
 pip install git+https://github.com/bendichter/simulation_output.git
 ```
 
-to use:
+#### usage
 ```python
 import pynwb
 from nwbext_simulation_output.simulation_output import CompartmentSeries
@@ -34,13 +34,19 @@ membrane_potential = CompartmentSeries(name='membrane_potential',
 ```
 
 ### MATLAB
-to install:
+#### installation
+
+command line:
+```
+git clone https://github.com/bendichter/nwbext_simulation_output.git
+```
+
+in matlab:
 ```matlab
 generateExtension('/path/to/nwbext_simulation_output/nwbext_simulation_output/nwbext_simulation_output.namespace.yaml');
 ```
 
-to use:
-
+#### usage
 ```matlab
 membrane_potential = types.simulation_output.CompartmentSeries('name', 'membrane_potential',...
     'id', [1, 2, 3], ...
@@ -51,4 +57,6 @@ membrane_potential = types.simulation_output.CompartmentSeries('name', 'membrane
     'unit', 'µV', ...
     'rate', 100.)
 ```
+
+## Talks
 Ben Dichter*, Kael Dai*, Aaron Milstein, Yazan Billeh, Andrew Tritt, Jean-Christophe Fillion-Robin, Anton Akhipov, Oliver Ruebel, Nicholas Cain, Kristofer Bouchard, Ivan Soltesz. NWB extension for storing results of large-scale neural network simulations. NeuroInformatics. Montreal, Canada (2018). [video](https://www.youtube.com/watch?v=uuYQW0EE2GY).
