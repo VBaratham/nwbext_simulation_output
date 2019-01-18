@@ -8,29 +8,29 @@ ext_source = name + '.extensions.yaml'
 
 # Continuous data for cell compartments
 datasets = [
-    NWBDatasetSpec(doc='list of cell ids',
-                   dtype='uint32',
+    NWBDatasetSpec(doc='list of unit ids',
+                   dtype='int',
                    shape=(None,),
-                   name='id',
+                   name='unit_id',
                    quantity='?',
                    dims=('cells',)),
-    NWBDatasetSpec(doc='index pointer',
-                   dtype='uint64',
+    NWBDatasetSpec(neurodata_type_inc='VectorIndex',
+                   doc='maps cell to compartments',
                    shape=(None,),
-                   name='index_pointer',
+                   name='compartments_index',
                    dims=('cells',)),
-    NWBDatasetSpec(doc='cell compartment ids corresponding to a given '
-                       'column in the data',
-                   dtype='uint32',
+    NWBDatasetSpec(neurodata_type_inc='VectorData',
+                   doc='cell compartment ids corresponding to a each column in the data',
+                   dtype='int',
                    shape=(None,),
-                   name='element_id',
+                   name='compartments',
                    dims=('compartments',)),
-    NWBDatasetSpec(doc='relative position of recording within a given '
-                       'cell',
+    NWBDatasetSpec(doc='position of recording within a compartment. 0 is close to soma, 1 is other end',
                    dtype='float',
-                   shape=(None, None),
+                   shape=(None,),
                    name='compartment_position',
-                   dims=('compartments', 'position'))]
+                   dims=('compartments',),
+                   quantity='?')]
 
 cont_data = NWBGroupSpec(doc='Stores continuous data in cell compartments',
                          datasets=datasets,

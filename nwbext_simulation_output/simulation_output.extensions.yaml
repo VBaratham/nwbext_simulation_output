@@ -3,34 +3,35 @@ groups:
   neurodata_type_inc: TimeSeries
   doc: Stores continuous data in cell compartments
   datasets:
-  - name: gid
-    dtype: uint32
-    doc: list of cell ids
+  - name: unit_id
+    dtype: int
+    doc: list of unit ids
     shape:
     - null
     dims:
     - cells
     quantity: '?'
-  - name: index_pointer
-    dtype: uint64
-    doc: index pointer
+  - neurodata_type_inc: VectorIndex
+    name: compartments_index
+    doc: maps cell to compartments
     shape:
     - null
     dims:
     - cells
-  - name: element_id
-    dtype: uint32
-    doc: cell compartment ids corresponding to a given column in the data
+  - neurodata_type_inc: VectorData
+    name: compartments
+    dtype: int
+    doc: cell compartment ids corresponding to a each column in the data
     shape:
     - null
     dims:
     - compartments
   - name: compartment_position
     dtype: float
-    doc: relative position of recording within a given cell
+    doc: position of recording within a compartment. 0 is close to soma, 1 is other
+      end
     shape:
-    - null
     - null
     dims:
     - compartments
-    - position
+    quantity: '?'
