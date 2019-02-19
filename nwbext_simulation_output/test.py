@@ -19,3 +19,6 @@ with NWBHDF5IO('test_compartment_series.nwb', 'w') as io:
 
 with NWBHDF5IO('test_compartment_series.nwb', mode='r') as io:
     io.read()
+
+assert(all(cs.find_compartments(0, [1, 3]) == [1, 3]))
+assert(all(cs.find_compartments(1) == 5))

@@ -70,7 +70,7 @@ class CompartmentSeries(TimeSeries):
              'doc': 'The smallest meaningful difference (in specified unit) between values in data',
              'default': _default_resolution},
             {'name': 'conversion', 'type': float,
-             'doc': 'Scalar to multiply each element by to conver to volts', 'default': _default_conversion},
+             'doc': 'Scalar to multiply each element by to convert to volts', 'default': _default_conversion},
 
             {'name': 'timestamps', 'type': ('array_data', 'data', TimeSeries),
              'doc': 'Timestamps for samples stored in data', 'default': None},
@@ -93,3 +93,42 @@ class CompartmentSeries(TimeSeries):
         super(CompartmentSeries, self).__init__(**kwargs)
         self.compartments = compartments
 
+    @staticmethod
+    def _compartment_finder(cell_compartments, cond, dtype, start_ind):
+        cell_compartments = np.array(cell_compartments)
+        if isinstance(cond, dtype):
+            return start_ind + np.where(cell_compartments == cond)[0]
+        else:
+            return np.array([start_ind + np.where(cell_compartments == x)[0] for x in cond]).ravel()
+
+    def find_compartments(self, cell, compartment_numbers=None, compartment_labels=None):
+        """
+
+        Parameters
+        ----------
+        cell: int
+            find indices of compartments of this cell
+        compartment_numbers: int | Iterable(int) (optional)
+            where these are (this is) the compartment(s)
+        compartment_labels: str | Iterable(str) (optional)
+            or where these are (this is) the label(s)
+
+        Returns
+        -------
+
+        np.array(dtype=int)
+
+        """
+        if compartment_numbers is not None and compartment_labels is not None:
+            raise ValueError('you cannot specify both compartments and compartment_labels')
+        if cell == 0:
+            start_ind = 0
+        else:
+            start_ind = self.compartments['number_index'].data[cell-1]
+        cell_compartments = self.compartments['number'][cell]
+        if compartment_numbers is not None:
+            return self._compartment_finder(cell_compartments, compartment_numbers, int, start_ind)
+        elif compartment_labels is not None:
+            return self._compartment_finder(cell_compartments, compartment_labels, str, start_ind)
+        else:
+            return np.arange(start_ind, start_ind + len(cell_compartments), dtype=int)
