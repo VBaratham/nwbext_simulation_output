@@ -13,7 +13,7 @@ with open(path.join(here, 'README.md'), encoding='utf-8') as f:
 setup(
     name='nwbext_simulation_output',
     version='0.1',
-    description='Convert data to nwb',
+    description='Extension for storing large-scale simulation output in the Neurodata Without Borders: Neurophysiology format',
     long_description=long_description,
     author='Ben Dichter',
     author_email='ben.dichter@gmail.com',
