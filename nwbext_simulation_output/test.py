@@ -1,12 +1,13 @@
 from pynwb import NWBHDF5IO, NWBFile
 from datetime import datetime
 from nwbext_simulation_output import CompartmentSeries, Compartments
+import numpy as np
 
 
 compartments = Compartments()
-compartments.add_row(number=[0, 1, 2, 3])
-compartments.add_row(number=[0, 1, 2])
-cs = CompartmentSeries('membrane_potential', [[1., 2., 3.], [1., 2., 3.], [1., 2., 3.]],
+compartments.add_row(number=[0, 1, 2, 3, 4], position=[0.1, 0.2, 0.3, 0.4, 0.5])
+compartments.add_row(number=[0], position=[np.nan])
+cs = CompartmentSeries('membrane_potential', np.random.randn(10, 6),
                        compartments=compartments,
                        unit='V', rate=100.)
 nwbfile = NWBFile('description', 'id', datetime.now().astimezone())
