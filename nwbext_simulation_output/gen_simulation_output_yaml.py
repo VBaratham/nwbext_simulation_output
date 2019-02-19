@@ -1,44 +1,64 @@
-from pynwb.spec import NWBDatasetSpec, NWBNamespaceBuilder, NWBGroupSpec
-
+from pynwb.spec import NWBDatasetSpec, NWBNamespaceBuilder, NWBGroupSpec, NWBLinkSpec
 
 name = 'simulation_output'
 ns_path = name + '.namespace.yaml'
 ext_source = name + '.extensions.yaml'
 
-
 # Continuous data for cell compartments
-datasets = [
-    NWBDatasetSpec(doc='list of unit ids',
-                   dtype='int',
-                   shape=(None,),
-                   name='unit_id',
-                   quantity='?',
-                   dims=('cells',)),
-    NWBDatasetSpec(neurodata_type_inc='VectorIndex',
-                   doc='maps cell to compartments',
-                   shape=(None,),
-                   name='compartments_index',
-                   dims=('cells',)),
-    NWBDatasetSpec(neurodata_type_inc='VectorData',
-                   doc='cell compartment ids corresponding to a each column in the data',
-                   dtype='int',
-                   shape=(None,),
-                   name='compartments',
-                   dims=('compartments',)),
-    NWBDatasetSpec(doc='position of recording within a compartment. 0 is close to soma, 1 is other end',
-                   dtype='float',
-                   shape=(None,),
-                   name='compartment_position',
-                   dims=('compartments',),
-                   quantity='?')]
 
-cont_data = NWBGroupSpec(doc='Stores continuous data in cell compartments',
-                         datasets=datasets,
-                         neurodata_type_inc='TimeSeries',
-                         neurodata_type_def='CompartmentSeries')
+Compartments = NWBGroupSpec(
+    default_name='compartments',
+    neurodata_type_def='Compartments',
+    neurodata_type_inc='DynamicTable',
+    doc='table that holds information about what places are being recorded',
+    datasets=[
+        NWBDatasetSpec(name='number',
+                       neurodata_type_inc='VectorData',
+                       doc='cell compartment ids corresponding to a each column in the data',
+                       dtype='int'),
+        NWBDatasetSpec(name='number_index',
+                       neurodata_type_inc='VectorIndex',
+                       doc='maps cell to compartments',
+                       quantity='?'),
+        NWBDatasetSpec(name='position',
+                       neurodata_type_inc='VectorData',
+                       doc='position of recording within a compartment. 0 is close to soma, 1 is other end',
+                       dtype='float',
+                       quantity='?'),
+        NWBDatasetSpec(name='position_index',
+                       neurodata_type_inc='VectorIndex',
+                       doc='indexes position',
+                       quantity='?'),
+        NWBDatasetSpec(name='label',
+                       neurodata_type_inc='VectorData',
+                       doc='labels for compartments',
+                       dtype='text',
+                       quantity='?'),
+        NWBDatasetSpec(name='label_index',
+                       neurodata_type_inc='VectorIndex',
+                       doc='indexes label',
+                       quantity='?')
+    ]
+)
+CompartmentsSeries = NWBGroupSpec(
+    neurodata_type_def='CompartmentSeries',
+    neurodata_type_inc='TimeSeries',
+    doc='Stores continuous data from cell compartments',
+    links=[
+        NWBLinkSpec(name='compartments',
+                    target_type='Compartments',
+                    doc='meta-data about compartments in this CompartmentSeries',
+                    quantity='?')
+    ]
+)
 
 # Export
-ns_builder = NWBNamespaceBuilder(name + ' extensions', name)
-for spec in [cont_data]:
-    ns_builder.add_spec(ext_source, spec)
+doc = 'NWB:N extension for storing large-scale simulation output ' \
+      'with multi-cell multi-compartment recordings'
+ns_builder = NWBNamespaceBuilder(doc=doc, name=name, version='0.2.0',
+                                 author=['Ben Dichter', 'Kael Dai'],
+                                 contact='ben.dichter@gmail.com')
+
+for neurodata_type in [Compartments, CompartmentsSeries]:
+    ns_builder.add_spec(ext_source, neurodata_type)
 ns_builder.export(ns_path)

@@ -1,6 +1,12 @@
 namespaces:
-- doc: simulation_output extensions
+- author:
+  - Ben Dichter
+  - Kael Dai
+  contact: ben.dichter@gmail.com
+  doc: NWB:N extension for storing large-scale simulation output with multi-cell multi-compartment
+    recordings
   name: simulation_output
   schema:
   - namespace: core
   - source: simulation_output.extensions.yaml
+  version: 0.2.0
