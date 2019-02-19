@@ -16,21 +16,24 @@ pip install git+https://github.com/bendichter/simulation_output.git
 
 #### usage
 ```python
-import pynwb
-from nwbext_simulation_output.simulation_output import CompartmentSeries
+from pynwb import NWBHDF5IO, NWBFile
+from datetime import datetime
+from nwbext_simulation_output import CompartmentSeries, Compartments
+import numpy as np
 
-nwbfile = pynwb.NWBFile(...)
 
-...
+compartments = Compartments()
+compartments.add_row(number=[0, 1, 2, 3, 4], position=[0.1, 0.2, 0.3, 0.4, 0.5])
+compartments.add_row(number=[0], position=[np.nan])
+cs = CompartmentSeries('membrane_potential', np.random.randn(10, 6),
+                       compartments=compartments,
+                       unit='V', rate=100.)
+nwbfile = NWBFile('description', 'id', datetime.now().astimezone())
+nwbfile.add_acquisition(compartments)
+nwbfile.add_acquisition(cs)
 
-membrane_potential = CompartmentSeries(name='membrane_potential',
-                                       id=[1, 2, 3],
-                                       index_pointer=[1, 2, 3],
-                                       data=[[1., 2., 4.], [1., 2., 4.]],
-                                       element_id=[0, 0, 0],
-                                       compartment_position=[1., 1., 1.],
-                                       unit='µV',
-                                       rate=100.)
+with NWBHDF5IO('test_compartment_series.nwb', 'w') as io:
+    io.write(nwbfile)
 ```
 
 ### MATLAB
