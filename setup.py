@@ -20,5 +20,7 @@ setup(
     keywords=['nwb', 'extension'],
     packages=find_packages(),
     install_requires=['pynwb'],
+    package_data={'': ['simulation_output.namespace.yaml']},
+    include_package_data=True,
     #entry_points={'pynwb.extensions': 'simulation_output = nwbext_simulation_output'},
 )
