@@ -2,10 +2,12 @@ import os
 
 from collections import Iterable
 
+from hdmf.utils import popargs, call_docval_func
+
+
 import numpy as np
 from pynwb import register_class, docval
 from pynwb.core import VectorIndex, VectorData, DynamicTable, ElementIdentifiers
-from pynwb.form.utils import popargs, call_docval_func
 from pynwb import load_namespaces
 from pynwb.base import TimeSeries, _default_resolution, _default_conversion
 

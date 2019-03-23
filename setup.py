@@ -19,8 +19,10 @@ setup(
     author_email='ben.dichter@gmail.com',
     keywords=['nwb', 'extension'],
     packages=find_packages(),
-    install_requires=['pynwb'],
-    package_data={'': ['simulation_output.namespace.yaml']},
+    install_requires=['pynwb', 'hdmf', 'numpy'],
+    # the last two lines ensure that pip installation includes the yaml files
+    package_data={'': ['simulation_output.namespace.yaml',
+                       'simulation_output.extensions.yaml']},
     include_package_data=True,
     #entry_points={'pynwb.extensions': 'simulation_output = nwbext_simulation_output'},
 )
