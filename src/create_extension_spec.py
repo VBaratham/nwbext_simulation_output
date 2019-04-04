@@ -5,13 +5,14 @@ name = 'simulation_output'
 
 doc = 'NWB:N extension for storing large-scale simulation output ' \
       'with multi-cell multi-compartment recordings'
-ns_builder = NWBNamespaceBuilder(doc=doc, name=name, version='0.2.0',
+ns_builder = NWBNamespaceBuilder(doc=doc, name=name, version='0.2.1',
                                  author=['Ben Dichter', 'Kael Dai'],
                                  contact='ben.dichter@gmail.com')
 
 ns_builder.include_type('VectorData', namespace='core')
 ns_builder.include_type('VectorIndex', namespace='core')
 ns_builder.include_type('TimeSeries', namespace='core')
+ns_builder.include_type('DynamicTable', namespace='core')
 
 # Continuous data for cell compartments
 
