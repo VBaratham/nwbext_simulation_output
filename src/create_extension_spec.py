@@ -1,8 +1,17 @@
 from pynwb.spec import NWBDatasetSpec, NWBNamespaceBuilder, NWBGroupSpec, NWBLinkSpec
+import os
 
 name = 'simulation_output'
-ns_path = name + '.namespace.yaml'
-ext_source = name + '.extensions.yaml'
+
+doc = 'NWB:N extension for storing large-scale simulation output ' \
+      'with multi-cell multi-compartment recordings'
+ns_builder = NWBNamespaceBuilder(doc=doc, name=name, version='0.2.0',
+                                 author=['Ben Dichter', 'Kael Dai'],
+                                 contact='ben.dichter@gmail.com')
+
+ns_builder.include_type('VectorData', namespace='core')
+ns_builder.include_type('VectorIndex', namespace='core')
+ns_builder.include_type('TimeSeries', namespace='core')
 
 # Continuous data for cell compartments
 
@@ -52,13 +61,10 @@ CompartmentsSeries = NWBGroupSpec(
     ]
 )
 
-# Export
-doc = 'NWB:N extension for storing large-scale simulation output ' \
-      'with multi-cell multi-compartment recordings'
-ns_builder = NWBNamespaceBuilder(doc=doc, name=name, version='0.2.0',
-                                 author=['Ben Dichter', 'Kael Dai'],
-                                 contact='ben.dichter@gmail.com')
+ns_path = name + '.namespace.yaml'
+ext_source = name + '.extensions.yaml'
 
+# Export
 for neurodata_type in [Compartments, CompartmentsSeries]:
     ns_builder.add_spec(ext_source, neurodata_type)
-ns_builder.export(ns_path)
+ns_builder.export(ns_path, outdir=os.path.join('..', 'spec'))
