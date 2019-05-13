@@ -11,7 +11,7 @@ This structure stores an arbitrarily large number of cells and cellular compartm
 ### python
 #### installation
 ```
-pip install git+https://github.com/bendichter/simulation_output.git
+pip install git+https://github.com/bendichter/nwbext_simulation_output.git
 ```
 
 #### usage
